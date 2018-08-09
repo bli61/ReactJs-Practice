@@ -1,0 +1,41 @@
+h1 {
+    color: blue;
+    font-size: 300%;
+    margin-top: 350px;
+    text-align: center;
+}
+.center {
+    margin: auto;
+}
+
+.btn {
+    margin: 10px;
+    width: 900px;
+    float: left;
+    background-color: white;
+}
+
+.App-footer {
+    background-color: white;
+    height: 50px;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.pic-left {
+    margin-left: 400px;
+    float: left;
+    width: 50px;
+    height: 50px;
+}
+.pic-right {
+    margin-right: 400px;
+    float: right;
+    width: 50px;
+    height: 50px;
+}
