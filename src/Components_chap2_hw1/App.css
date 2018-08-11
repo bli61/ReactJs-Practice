@@ -1,0 +1,64 @@
+h1 {
+    color: blue;
+    padding: 20px;
+}
+ul {
+    border: 1px solid violet;
+    background-color: lightblue;
+    width: 50%;
+}
+.center {
+    margin: auto;
+}
+
+.btn {
+    color: white;
+    font-size: 150%;
+    margin: 10px;
+    width: 700px;
+    height: 50px;
+    float: left;
+    background-color: blue;
+}
+
+.App-footer {
+    background-color: white;
+    height: 50px;
+    padding: 20px;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.pic-left {
+    margin-left: 400px;
+    float: left;
+    width: 50px;
+    height: 50px;
+}
+.pic-right {
+    margin-right: 400px;
+    float: right;
+    width: 50px;
+    height: 50px;
+}
+.divpart1 {
+    box-sizing: border-box;
+    padding: 30px;
+    width: "50%";
+    float: left;
+}
+.divpart2 {
+    margin-left: 300px;
+    margin-top: 50px;
+    float: right;
+    box-sizing: border-box;
+    border: 1px solid red;
+    padding: 30px;
+    width: "50%";
+    height: 500px;
+    float: left;
+}
