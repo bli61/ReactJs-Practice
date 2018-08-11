@@ -1,0 +1,45 @@
+.container {
+    height: 100%;
+    width: 100%;
+}
+.outer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 900px;
+    border: 1px solid violet;
+}
+.inner {
+    margin: 50px;
+    border: 1px solid red;
+    height: 90%;
+    background-color: white;
+}
+.screen {
+    border: 1px solid violet;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+    height: 200px;
+    width: 200px;
+}
+.slider {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    font-size: 100%;
+    text-align: center;
+}
+div input {
+    -webkit-appearance: none;
+    height: 10px;
+    width: 70%;
+    background-color: violet;
+}
+
+.center {
+    margin: auto;
+}
+.special {
+    font-size: 150%;
+}
