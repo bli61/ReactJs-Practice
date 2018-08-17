@@ -1,7 +1,8 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
+import { loadState } from "./LocalStorage";
 const Problems = props => {
-    if (!props.authenticated) {
+    if (!loadState()) {
         return <Redirect to={{ pathname: "/login" }} />;
     }
     return (
