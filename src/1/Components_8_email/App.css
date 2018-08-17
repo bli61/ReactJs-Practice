@@ -1,0 +1,46 @@
+.flex-container {
+    height: 700px;
+    display: flex;
+    align-items: stretch;
+    background-color: red;
+}
+
+.flex-container > div {
+    box-sizing: border-box;
+    overflow: scroll;
+    background-color: white;
+    width: 100px;
+    height: 700px;
+    border: 1px solid black;
+}
+.Rough {
+    border: 1px dotted silver;
+    line-height: 20px;
+}
+.layoutPL {
+    text-align: left;
+}
+.layoutPR {
+    float: right;
+    text-align: right;
+}
+.btnhead {
+    box-sizing: border-box;
+    background-color: lightblue;
+    color: white;
+    height: 20%;
+}
+.btnhead > p {
+    font-size: 30px;
+    margin: auto;
+    padding: 35px;
+    text-align: center;
+}
+.btnLoc {
+    font-size: 30px;
+    padding: 10px;
+}
+.btnLoc > p {
+    margin: 30px;
+    padding: 20px;
+}
