@@ -1,0 +1,32 @@
+.btn {
+    width: 100px;
+    height: 50px;
+    margin: 100px;
+    padding: auto;
+    border: 1px solid violet;
+}
+
+.window {
+    width: 500px;
+    height: 200px;
+    margin-top: 300px;
+    margin-left: 300px;
+    padding: auto;
+}
+
+.btn1 {
+    margin-top: 10px;
+    height: 40px;
+    width: 100px;
+    float: right;
+    background-color: grey;
+    color: white;
+}
+.btn2 {
+    margin-top: 10px;
+    height: 40px;
+    width: 150px;
+    float: right;
+    background-color: blue;
+    color: white;
+}
