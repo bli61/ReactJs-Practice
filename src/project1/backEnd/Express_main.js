@@ -1,15 +1,16 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const bodyParser = require("body-parser");
+
 let app = express();
 
 // connect
-
-mongoose.connect("mongodb://ksssint:QAZ123@ds231242.mlab.com:31242/project1");
-
+mongoose.connect(
+    "mongodb://ksssint:QAZwsx123@ds231242.mlab.com:31242/project1"
+);
 
 // get persistent class
-const User = require("./UserList");
+const User = require("./UserInfo");
 
 // get all records
 app.get("/app/users", function(req, res) {
