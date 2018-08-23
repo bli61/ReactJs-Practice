@@ -4,7 +4,9 @@ const bodyParser = require("body-parser");
 let app = express();
 
 // connect
-mongoose.connect("mongodb://ksssint:QAZ123@ds157901.mlab.com:57901/test1");
+
+mongoose.connect("mongodb://ksssint:QAZ123@ds231242.mlab.com:31242/project1");
+
 
 // get persistent class
 const User = require("./UserList");
