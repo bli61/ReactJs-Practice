@@ -1,3 +1,4 @@
+let standard = ["M", "F"];
 const validation = (fname, lname, sex, age, pwd, repeatpwd) => {
     let valid =
         fname.length === 0 ||
@@ -6,7 +7,9 @@ const validation = (fname, lname, sex, age, pwd, repeatpwd) => {
         age.length === 0 ||
         pwd.length === 0 ||
         repeatpwd.length === 0 ||
-        pwd === repeatpwd;
+        pwd !== repeatpwd ||
+        !Number(age) ||
+        !standard.includes(sex.toUpperCase());
     return valid;
 };
 export default validation;
