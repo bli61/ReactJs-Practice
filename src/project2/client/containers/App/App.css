@@ -1,0 +1,45 @@
+.content {
+    border: 1px solid gray;
+    background-color: lightblue;
+    width: 700px;
+    height: 1000px;
+    padding: 58px 76px 0 76px;
+    color: black;
+}
+.span {
+    font: 12px Arial, Helvetica, sans-serif;
+
+    margin-left: 30px;
+}
+input {
+    font: 12px Arial, Helvetica, sans-serif;
+    color: white;
+    width: 205px;
+    padding: 10px 4px 6px 3px;
+    border: 1px solid #0d2c52;
+    background-color: #4376b4;
+    font-size: 16px;
+}
+.nameField {
+    font: 14px Arial, Helvetica, sans-serif;
+    display: inline-block;
+    width: 90px;
+
+    text-align: left;
+    padding: 14px 20px 0 0;
+    margin: 0 0 7px 0;
+}
+.inputField {
+    font: 12px Arial, Helvetica, sans-serif;
+    display: inline-block;
+    width: 130px;
+    margin: 0;
+    margin: 0 0 7px 0;
+}
+.btn {
+    margin: 10px;
+}
+::placeholder {
+    color: white;
+    opacity: 1; /* Firefox */
+}
