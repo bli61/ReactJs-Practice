@@ -83,7 +83,17 @@ class UserInfo extends Component {
                 <CustomTableCell>{this.props.title}</CustomTableCell>
                 <CustomTableCell>{this.props.employees.length}</CustomTableCell>
                 <CustomTableCell>
-                    {this.props.manager.managerName}
+                    <Link
+                        style={{ textDecoration: "none" }}
+                        to={{
+                            pathname: "/manager",
+                            state: {
+                                index: this.props.manager.managerId
+                            }
+                        }}
+                    >
+                        {this.props.manager.managerName}
+                    </Link>
                 </CustomTableCell>
 
                 <CustomTableCell>
