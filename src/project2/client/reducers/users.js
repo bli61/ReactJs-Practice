@@ -2,7 +2,8 @@ const initState = {
     isFetching: false,
     users: [],
     err: null,
-    user: {}
+    user: {},
+    message: {}
 };
 
 const users = (state = initState, action) => {
@@ -86,48 +87,57 @@ const users = (state = initState, action) => {
                         ...state,
                         isFetching: false,
                         err: null,
-                        users: action.data
+                        users: action.data,
+                        message: action.data.Message
                     };
                 case "GETONEID":
                     return {
                         ...state,
                         isFetching: false,
                         err: null,
-                        user: action.data
+                        user: action.data,
+                        message: action.data.Message
                     };
                 case "CREATE":
+                    console.log("in create:", state.users);
                     return {
                         isFetching: false,
                         err: null,
-                        users: [...state.data, action.data]
+                        users: [...state.users, action.data],
+                        message: action.data.Message
                     };
+
                 case "DELETE":
                     return {
                         isFetching: false,
                         err: null,
-                        users: state.data.filter(
+                        users: state.users.filter(
                             obj => obj._id !== action.data._id
-                        )
+                        ),
+                        message: action.data.Message
                     };
+
                 case "UPDATE":
                     return {
                         isFetching: false,
                         err: null,
                         users: [
-                            ...state.data.slice(
+                            ...state.users.slice(
                                 0,
-                                state.data.findIndex(
+                                state.users.findIndex(
                                     obj => obj._id === action.data._id
                                 )
                             ),
                             action.data,
-                            ...state.slice(
-                                state.data.findIndex(
+                            ...state.users.slice(
+                                state.users.findIndex(
                                     obj => obj._id === action.data._id
                                 ) + 1
                             )
-                        ]
+                        ],
+                        message: action.data.Message
                     };
+
                 default:
                     return state;
             }

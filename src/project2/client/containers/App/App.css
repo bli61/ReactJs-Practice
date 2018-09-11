@@ -2,14 +2,15 @@
     border: 1px solid gray;
     background-color: lightblue;
     width: 700px;
-    height: 1000px;
+    height: 800px;
     padding: 58px 76px 0 76px;
     color: black;
+    margin: auto;
 }
-.span {
+.spanL {
     font: 12px Arial, Helvetica, sans-serif;
 
-    margin-left: 30px;
+    margin-left: 150px;
 }
 input {
     font: 12px Arial, Helvetica, sans-serif;
@@ -37,9 +38,12 @@ input {
     margin: 0 0 7px 0;
 }
 .btn {
-    margin: 10px;
+    margin: 10px 0 0 270px;
 }
 ::placeholder {
     color: white;
     opacity: 1; /* Firefox */
+}
+.center {
+    margin: auto;
 }

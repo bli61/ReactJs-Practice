@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 import users from "./users";
-import page from "./page";
-
+import dropdown from "./dropdown";
 const reducers = combineReducers({
-    users
+    users,
+    dropdown
 });
 
 export default reducers;

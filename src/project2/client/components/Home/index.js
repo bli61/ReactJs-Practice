@@ -4,9 +4,9 @@ import { connect } from "react-redux";
 import * as actions from "../../actions";
 import ShowAllInfo from "../../components/ShowAllInfo";
 import Button from "@material-ui/core/Button";
+
 let filteredUsers = [];
-let usersBeforeFilter = [];
-let totalPage;
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -16,6 +16,9 @@ class Home extends Component {
         };
     }
 
+    static defaultProps = {
+        manager: { managerId: "", managerName: "" }
+    };
     componentDidMount() {
         this.props.getUserList();
 
@@ -38,10 +41,7 @@ class Home extends Component {
                     user =>
                         user.name.includes(this.state.input) ||
                         user.title.includes(this.state.input) ||
-                        user.manager.includes(this.state.input) ||
-                        user.employees.length
-                            .toString()
-                            .includes(this.state.input)
+                        user.manager.managerName.includes(this.state.input)
                 )
             ];
         }
@@ -62,7 +62,7 @@ class Home extends Component {
                 >
                     {" "}
                     <Link style={{ textDecoration: "none" }} to="/new">
-                        Create New Users
+                        Create New User
                     </Link>{" "}
                 </Button>
             </div>
@@ -71,7 +71,6 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         users: state.users
     };

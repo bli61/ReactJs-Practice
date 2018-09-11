@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import validation from "../../helperfunction/Validation";
-import format from "../../helperfunction/Format";
+
 import * as actions from "../../actions";
 import Button from "@material-ui/core/Button";
 import Dropdown from "../DropDown";
@@ -18,15 +17,13 @@ class CreateNew extends Component {
             name: "",
             sex: "",
             title: "",
-            employees: [],
             manager: {},
             startDate: "",
             officePhone: "",
             sms: "",
             email: "",
             index: "",
-            authenticated: false,
-            rank: 0
+            authenticated: false
         };
     }
 
@@ -58,23 +55,21 @@ class CreateNew extends Component {
                 { headers: { "X-Requested-With": "XMLHttpRequest" } }
             )
             .then(res => {
-                console.log(res);
                 this.setState({ imageUrl: res.data.secure_url });
                 let pendingUser = {
                     imageUrl: this.state.imageUrl,
                     name: this.state.name,
                     sex: this.state.sex,
                     title: this.state.title,
-                    employees: this.state.employees,
                     manager: { ...this.state.manager },
                     officePhone: this.state.officePhone,
                     sms: this.state.sms,
                     email: this.state.email,
-                    index: this.state.index,
-                    rank: this.state.rank
+                    index: this.state.index
                 };
                 console.log("createUser before insert:", pendingUser);
                 this.props.createNew(pendingUser);
+                console.log("in create to find");
                 this.setState({
                     file: null,
                     tempFile: null,
@@ -82,14 +77,11 @@ class CreateNew extends Component {
                     name: "",
                     sex: "",
                     title: "",
-                    employees: [],
                     manager: {},
                     officePhone: "",
                     sms: "",
                     email: "",
-                    index: "",
-                    rank: 0,
-                    authenticated: true
+                    index: ""
                 });
             });
 
@@ -115,19 +107,22 @@ class CreateNew extends Component {
         // }
 
         // console.log(filterUsers);
-
+        console.log("in create", this.props.users);
+        console.log("in create", this.state.authenticated);
         return (
             <div className="content">
+                {this.props.users.message === "SUCCESS_ADD_EMPLOYEE" &&
+                    this.setState({ authenticated: true })}
                 {this.state.authenticated === true && (
                     <Redirect to={{ pathname: "/", state: { from: "/new" } }} />
                 )}
-                <h1>Create New User:</h1>
+                <h1 style={{ textAlign: "center" }}>Create New User:</h1>
                 <div className="spanL">
                     <div className="nameField">Avatar: </div>
                     <img
                         style={{ width: 100, height: 100 }}
                         src={this.state.file}
-                        alt="image"
+                        alt="Avatar"
                     />
                     <div className="inputField">
                         <input
@@ -177,19 +172,7 @@ class CreateNew extends Component {
                         />
                     </div>
                 </div>
-                <div className="spanL">
-                    <div className="nameField">Rank : </div>
-                    <div className="inputField">
-                        <input
-                            type="text"
-                            name="rank"
-                            value={this.state.rank}
-                            onChange={this.handleChange}
-                            required={true}
-                            placeholder="Rank"
-                        />
-                    </div>
-                </div>
+
                 <div className="spanL">
                     <div className="nameField"> OfficePhone : </div>
                     <div className="inputField">
@@ -236,7 +219,6 @@ class CreateNew extends Component {
                     <Dropdown
                         handleClick={this.handleClick}
                         users={this.props.users.users}
-                        rank={this.state.rank}
                     />
                 </div>
 

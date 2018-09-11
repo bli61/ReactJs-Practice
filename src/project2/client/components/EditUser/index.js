@@ -1,16 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import validation from "../../helperfunction/Validation";
 import * as actions from "../../actions";
 import Button from "@material-ui/core/Button";
 import axios from "axios";
-
+import DropdownEdit from "../DropdownEdit";
 class EditUser extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rank: 0,
             index: "",
             file: null,
             tempFile: null,
@@ -22,7 +20,7 @@ class EditUser extends Component {
             email: "",
             sms: "",
             officePhone: "",
-            manager: "",
+            manager: {},
             employees: [],
             authenticated: false
         };
@@ -30,7 +28,6 @@ class EditUser extends Component {
 
     componentDidMount() {
         const {
-            rank,
             index,
             url,
             name,
@@ -44,20 +41,26 @@ class EditUser extends Component {
             employees
         } = this.props.location.state;
         this.setState({
-            rank: rank,
             index: index,
             url: url,
             name: name,
             title: title,
             sex: sex,
             startDate: startDate,
-            eamil: email,
+            email: email,
             sms: sms,
             officePhone: officePhone,
-            manager: manager,
+            manager: { ...manager },
             employees: [...employees]
         });
+        console.log("in edit user componentdidmount", index);
+        this.props.getValidUser(index);
     }
+
+    handleClick = obj => {
+        this.setState({ manager: { ...obj } });
+        console.log("cn in click", obj);
+    };
 
     handleChange = e => {
         let name = e.target.name;
@@ -89,7 +92,6 @@ class EditUser extends Component {
                     console.log(res);
                     this.setState({ imageUrl: res.data.secure_url });
                     let pendingUser = {
-                        rank: this.state.rank,
                         imageUrl: this.state.imageUrl,
                         name: this.state.name,
                         sex: this.state.sex,
@@ -104,7 +106,6 @@ class EditUser extends Component {
                     const { index } = this.props.location.state;
                     this.props.updateUser(index, pendingUser);
                     this.setState({
-                        rank: "",
                         index: "",
                         file: "",
                         url: "",
@@ -115,14 +116,13 @@ class EditUser extends Component {
                         email: "",
                         sms: "",
                         officePhone: "",
-                        manager: "",
+                        manager: {},
                         employees: [],
                         authenticated: true
                     });
                 });
         } else {
             let pendingUser = {
-                rank: this.state.rank,
                 imageUrl: this.state.imageUrl,
                 name: this.state.name,
                 sex: this.state.sex,
@@ -137,7 +137,6 @@ class EditUser extends Component {
             const { index } = this.props.location.state;
             this.props.updateUser(index, pendingUser);
             this.setState({
-                rank: "",
                 index: "",
                 file: "",
                 url: "",
@@ -148,7 +147,7 @@ class EditUser extends Component {
                 email: "",
                 sms: "",
                 officePhone: "",
-                manager: "",
+                manager: {},
                 employees: [],
                 authenticated: true
             });
@@ -156,17 +155,9 @@ class EditUser extends Component {
     };
 
     render() {
-        console.log(this.props.users.user);
-        const { user } = this.props.users;
-        console.log(user);
-        // const isDisabled = validation(
-        //     this.state.fn,
-        //     this.state.ln,
-        //     this.state.sex,
-        //     this.state.age,
-        //     this.state.pwd,
-        //     this.state.rpt
-        // );
+        console.log("in edit user, all valid", this.props.dropdownInfo);
+        console.log("in edit user, all info:", this.props.users);
+        console.log(this.state.startDate);
         return (
             <div className="content">
                 {this.state.authenticated === true && (
@@ -174,21 +165,26 @@ class EditUser extends Component {
                         to={{ pathname: "/", state: { from: "/edit" } }}
                     />
                 )}
-                <h1>Edit User:</h1>
+                <h1 style={{ textAlign: "center" }}>Edit User:</h1>
                 <div className="spanL">
+                    <p>
+                        Prev:{" "}
+                        <img
+                            style={{ width: 100, height: 100 }}
+                            src={this.state.url}
+                            alt="Prev"
+                        />{" "}
+                    </p>
+
+                    <p>
+                        New:{" "}
+                        <img
+                            style={{ width: 100, height: 100 }}
+                            src={this.state.file}
+                            alt="New"
+                        />
+                    </p>
                     <div className="nameField">Avatar: </div>
-                    <p>Prev</p>
-                    <img
-                        style={{ width: 100, height: 100 }}
-                        src={this.state.url}
-                        alt="Prev"
-                    />
-                    <p>New</p>
-                    <img
-                        style={{ width: 100, height: 100 }}
-                        src={this.state.file}
-                        alt="New"
-                    />
                     <div className="inputField">
                         <input
                             type="file"
@@ -237,20 +233,7 @@ class EditUser extends Component {
                         />
                     </div>
                 </div>
-                <div className="spanL">
-                    <div className="nameField">Rank : </div>
 
-                    <div className="inputField">
-                        <input
-                            type="text"
-                            name="rank"
-                            value={this.state.rank}
-                            onChange={this.handleChange}
-                            required={true}
-                            placeholder="Rank"
-                        />
-                    </div>
-                </div>
                 <div className="spanL">
                     <div className="nameField"> OfficePhone : </div>
                     <div className="inputField">
@@ -291,6 +274,17 @@ class EditUser extends Component {
                         />
                     </div>
                 </div>
+
+                <div className="spanL">
+                    <div className="nameField">New Manager: </div>
+
+                    <DropdownEdit
+                        handleClick={this.handleClick}
+                        users={this.props.dropdownInfo.data}
+                        manager={this.state.manager}
+                        index={this.state.index}
+                    />
+                </div>
                 <div className="btn">
                     <Button
                         style={{ padding: 20 }}
@@ -318,7 +312,8 @@ class EditUser extends Component {
 const mapStateToProps = state => {
     console.log(state);
     return {
-        users: state.users
+        users: state.users,
+        dropdownInfo: state.dropdown
     };
 };
 
@@ -335,6 +330,9 @@ const mapDispatchToProps = dispatch => {
         },
         updateUser: (id, newInfo) => {
             dispatch(actions.updateUser(id, newInfo));
+        },
+        getValidUser: id => {
+            dispatch(actions.getDropDown(id));
         }
     };
 };

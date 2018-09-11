@@ -28,8 +28,7 @@ class ShowAllInfo extends Component {
         super(props);
         this.state = {
             flag: 0,
-            colName: "",
-            orderUser: []
+            colName: ""
         };
     }
 
@@ -76,8 +75,6 @@ class ShowAllInfo extends Component {
     render() {
         const { flag } = this.state;
 
-        console.log(this.state);
-        console.log("showallinfo", this.props.users);
         if (flag === 0) {
             sortedUsers = [...this.props.users];
         } else if (flag === 1) {
@@ -125,7 +122,6 @@ class ShowAllInfo extends Component {
                             sms={user.sms}
                             email={user.email}
                             err={this.props.users.err}
-                            rank={user.rank}
                         />
                     ))}
                 </TableBody>

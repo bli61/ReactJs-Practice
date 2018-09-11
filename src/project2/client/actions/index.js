@@ -23,6 +23,41 @@ const requestFail = (error, flag) => {
     };
 };
 
+const requestStartDD = () => {
+    return {
+        type: "USER_FETCH_START"
+    };
+};
+
+const requestSuccessDD = res => {
+    return {
+        type: "USER_FETCH_SUCCESS",
+        data: res.data,
+        message: res
+    };
+};
+
+const requestFailDD = error => {
+    return {
+        type: "USER_FETCH_FAIL",
+        error
+    };
+};
+
+export const getDropDown = id => {
+    return (dispatch, store) => {
+        dispatch(requestStartDD());
+        axios
+            .get(`/api/dropdown/${id}`)
+            .then(res => {
+                dispatch(requestSuccessDD(res));
+            })
+            .catch(err => {
+                dispatch(requestFailDD(err));
+            });
+    };
+};
+
 export const getUserList = () => {
     return (dispatch, store) => {
         dispatch(requestStart("GET"));
@@ -45,7 +80,9 @@ export const createNew = userInfo => {
             .post("/api/users", userInfo)
             .then(res => {
                 dispatch(requestSuccess(res, "CREATE"));
+                dispatch(getUserList());
             })
+
             .catch(err => {
                 dispatch(requestFail(err, "CREATE"));
             });
@@ -59,6 +96,7 @@ export const deleteUser = id => {
             .delete(`/api/users/${id}`)
             .then(res => {
                 dispatch(requestSuccess(res, "DELETE"));
+                dispatch(getUserList());
             })
             .catch(err => {
                 dispatch(requestFail(err, "DELETE"));
@@ -88,6 +126,7 @@ export const updateUser = (id, newInfo) => {
             .then(res => {
                 dispatch(requestSuccess(res, "UPDATE"));
             })
+            .then(() => dispatch(getUserList()))
             .catch(err => {
                 dispatch(requestFail(err, "UPDATE"));
             });

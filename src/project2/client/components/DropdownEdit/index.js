@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 
-class DropDown extends Component {
+class DropDownEdit extends Component {
     constructor(props) {
         super(props);
         this.state = { manager: { managerId: "", managerName: "" } };
     }
-
+    componentDidMount() {
+        this.setState({ manager: { ...this.props.manager } }, () => {
+            console.log("in edit dropdown", this.props.manager);
+        });
+    }
     handleChange = e => {
         let value = this.props.users.filter(
             user => user._id === e.target.value
@@ -21,8 +25,9 @@ class DropDown extends Component {
     };
 
     render() {
+        console.log("in edit", this.props.manager);
         let users = [...this.props.users];
-
+        console.log("in edit dropdown state", this.state.manager);
         let optionTemplate = users.map((user, key) => (
             <option value={user._id} key={key}>
                 {user.name}
@@ -30,11 +35,12 @@ class DropDown extends Component {
         ));
         return (
             <select
+                style={{ width: 50, height: 20 }}
                 value={this.state.manager.managerName}
                 onChange={this.handleChange}
             >
                 <option value={this.state.manager.managerName}>
-                    {this.state.manager.managerName}
+                    {this.props.manager.managerName}
                 </option>
                 {optionTemplate}
             </select>
@@ -42,4 +48,4 @@ class DropDown extends Component {
     }
 }
 
-export default DropDown;
+export default DropDownEdit;

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
-import validation from "../../helperfunction/Validation";
 import * as actions from "../../actions";
 import Button from "@material-ui/core/Button";
 
@@ -22,7 +21,6 @@ class DetailUser extends Component {
             manager: {},
             employees: [],
             err: "",
-            rank: "",
             deleteFlag: false
         };
     }
@@ -40,8 +38,7 @@ class DetailUser extends Component {
             officePhone,
             manager,
             employees,
-            err,
-            rank
+            err
         } = this.props.location.state;
         this.setState({
             index: index,
@@ -55,25 +52,34 @@ class DetailUser extends Component {
             officePhone: officePhone,
             manager: { ...manager },
             employees: [...employees],
-            err: err,
-            rank: rank
+            err: err
         });
     }
 
     render() {
+        console.log("in delete", this.props.users);
         console.log("Detailuser:", this.state);
-
+        let employeeList = this.state.employees.map(item => {
+            return item.employeeName;
+        });
+        let regexp = /[\d-]*T/;
         return (
             <div>
                 {this.state.err && <p>{this.state.err}</p>}
                 <div className="content">
-                    <img src={this.state.url} alt="avatar" />
+                    <img
+                        style={{ width: 200, height: 200 }}
+                        src={this.state.url}
+                        alt="avatar"
+                    />
                     <ul>
                         <li>Name : {this.state.name}</li>
                         <li>Title : {this.state.title}</li>
-                        <li>Rank : {this.state.rank}</li>
+
                         <li>Sex : {this.state.sex}</li>
-                        <li>Start Date : {this.state.startDate}</li>
+                        <li>
+                            Start Date : {this.state.startDate.match(regexp)}
+                        </li>
                         <li>
                             Email :{" "}
                             <a href={"mailto:" + this.state.email}>
@@ -118,7 +124,7 @@ class DetailUser extends Component {
                                 {this.state.manager.managerName}
                             </Link>
                         </li>
-                        <li>Employees: {this.state.employees.length}</li>
+                        <li>Employees: {JSON.stringify(employeeList)}</li>
                     </ul>
                     <Button
                         variant="contained"
@@ -140,8 +146,7 @@ class DetailUser extends Component {
                                     officePhone: this.state.officePhone,
                                     sms: this.state.sms,
                                     email: this.state.email,
-                                    index: this.state.index,
-                                    rank: this.state.rank
+                                    index: this.state.index
                                 }
                             }}
                         >
@@ -154,7 +159,7 @@ class DetailUser extends Component {
                         aria-label="Delete"
                         onClick={() => {
                             this.props.deleteUser(this.state.index);
-                            if (!this.state.err) {
+                            if (this.props) {
                                 this.setState({ deleteFlag: true });
                             }
                         }}
