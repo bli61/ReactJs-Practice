@@ -28,9 +28,65 @@ class ShowAllInfo extends Component {
         super(props);
         this.state = {
             flag: 0,
-            colName: ""
+            colName: "",
+            per: 5,
+            page: 1,
+            totalPages: null,
+            scrolling: false,
+            index: 0,
+            contacts: []
         };
     }
+
+    componentWillMount() {
+        this.loadContacts();
+        this.scrollListener = window.addEventListener("scroll", e => {
+            this.handleScroll(e);
+        });
+    }
+
+    handleScroll = () => {
+        const { scrolling, totalPages, page } = this.state;
+        if (scrolling) return;
+        if (totalPages <= page) return;
+        var elem = document.getElementsByTagName("tr")[this.state.per];
+        var lastLi = elem.lastChild;
+        var lastLiOffset = lastLi.offsetTop + lastLi.clientHeight;
+        var pageOffset = window.pageYOffset + window.innerHeight;
+        var bottomOffset = 200;
+        if (pageOffset > lastLiOffset - bottomOffset) {
+            this.loadMore();
+        }
+        console.log(lastLi);
+        console.log("lastLiOffset", lastLiOffset);
+        console.log("pageOffset", pageOffset);
+    };
+
+    loadContacts = () => {
+        const { per, contacts, index } = this.state;
+        this.setState({
+            contacts: [
+                ...contacts,
+                ...this.props.users.slice(index, index + per)
+            ],
+            scrolling: false,
+            totalPages: this.props.users.length / per
+        });
+    };
+
+    loadMore = () => {
+        console.log("im in");
+        setTimeout(() => {
+            this.setState(
+                prevState => ({
+                    index: prevState.index + this.state.per,
+                    page: prevState.page + 1,
+                    scrolling: true
+                }),
+                this.loadContacts
+            );
+        }, 500);
+    };
 
     sortName = () => {
         if (this.state.flag === 0 && !this.state.colName) {
@@ -62,21 +118,22 @@ class ShowAllInfo extends Component {
         }
     };
 
-    sortManager = () => {
-        if (this.state.flag === 0 && !this.state.colName) {
-            this.setState({ colName: "manager", flag: 1 });
-        } else if (this.state.flag === 1) {
-            this.setState({ colName: "manager", flag: 2 });
-        } else {
-            this.setState({ colName: "manager", flag: 1 });
-        }
-    };
+    // sortManager = () => {
+    //     if (this.state.flag === 0 && !this.state.colName) {
+    //         this.setState({ colName: "manager", flag: 1 });
+    //     } else if (this.state.flag === 1) {
+    //         this.setState({ colName: "manager", flag: 2 });
+    //     } else {
+    //         this.setState({ colName: "manager", flag: 1 });
+    //     }
+    // };
 
     render() {
         const { flag } = this.state;
+        console.log(this.state);
 
         if (flag === 0) {
-            sortedUsers = [...this.props.users];
+            sortedUsers = [...this.state.contacts];
         } else if (flag === 1) {
             let ascSort = [...this.props.users];
             sortF.sortFuncAsc(ascSort, this.state.colName);
@@ -100,9 +157,7 @@ class ShowAllInfo extends Component {
                         <CustomTableCell onClick={this.sortEmployee}>
                             Employee
                         </CustomTableCell>
-                        <CustomTableCell onClick={this.sortManager}>
-                            Manager
-                        </CustomTableCell>
+                        <CustomTableCell>Manager</CustomTableCell>
                         <CustomTableCell>Detail</CustomTableCell>
                     </TableRow>
                 </TableHead>

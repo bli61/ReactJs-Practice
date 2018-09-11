@@ -9,7 +9,7 @@ import * as actions from "../../actions";
 
 const CustomTableCell = withStyles(theme => ({
     body: {
-        fontSize: 12
+        fontSize: 14
     }
 }))(TableCell);
 

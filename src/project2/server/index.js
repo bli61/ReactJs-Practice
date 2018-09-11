@@ -87,84 +87,90 @@ app.get("/api/users/:id", function(req, res) {
 //update record
 app.put("/api/users/:id", (req, res) => {
     let id = req.params.id;
+
+    console.log("after update should be", req.body);
     User.findById(id)
         .then(user => {
-            User.findByIdAndUpdate({ _id: id }, req.body)
-                .then(() => {
-                    console.log("in update get user", user);
-                    return User.findById(user.manager.managerId);
-                })
+            console.log("before everything", user);
+            User.findById(user.manager.managerId)
                 .then(manager => {
                     console.log("in update", manager);
                     if (manager !== null) {
-                        if (
-                            user.manager.managerId !==
-                            req.body.manager.managerId
-                        ) {
-                            manager.employees = manager.employees.filter(
-                                item => item.employeeId.toString() !== id
-                            );
-                            manager
-                                .save()
-                                .then(() =>
-                                    User.findById(req.body.manager.managerId)
-                                )
-                                .then(newManager => {
-                                    if (newManager !== null) {
-                                        newManager.employees.push({
-                                            employeeId: user._id,
-                                            employeeName: user.name
-                                        });
-                                        newManager
-                                            .save()
-                                            .then(product =>
-                                                console.log(product)
-                                            )
-                                            .catch(err => console.log(err));
-                                    } else {
-                                        console.log(
-                                            "after edit, no manager anymore"
-                                        );
-                                    }
-                                })
-                                .catch(err =>
-                                    console.log(
-                                        `when changing manager, there is error: ${err}`
-                                    )
+                        if (req.body.manager.managerId !== null) {
+                            if (
+                                user.manager.managerId !==
+                                req.body.manager.managerId
+                            ) {
+                                manager.employees = manager.employees.filter(
+                                    item => item.employeeId.toString() !== id
                                 );
+                                manager
+                                    .save()
+                                    .then(() =>
+                                        console.log("success update manager")
+                                    )
+                                    .catch(err =>
+                                        res.json({
+                                            Message: `when changing manager, there is error: ${err}`
+                                        })
+                                    );
+                            } else {
+                                console.log("Manager did not update!");
+                            }
                         } else {
-                            console.log("Manager did not update!");
+                            console.log(
+                                "Before update have value, after that no manager anymore"
+                            );
                         }
                     } else {
-                        if (req.body.manager !== null) {
-                            User.findById(req.body.manager.managerId).then(
-                                newManager => {
-                                    newManager.employees = [
-                                        ...newManager.employees,
-                                        {
-                                            employeeId:
-                                                req.body.manager.managerId,
-                                            employeeName:
-                                                req.body.manager.managerName
-                                        }
-                                    ];
-                                    newManager
-                                        .save()
-                                        .then(product => console.log(product))
-                                        .catch(err =>
-                                            console.log(
-                                                `when changing manager, there is error: ${err}`
-                                            )
-                                        );
-                                }
-                            );
+                        console.log("no manager need to be updated");
+                    }
+                })
+                .then(() => User.findById(req.body.manager.managerId))
+                .then(newManager => {
+                    if (newManager !== null) {
+                        console.log("newManager", newManager);
+                        if (user.manager !== null) {
+                            if (
+                                req.body.manager.managerId !==
+                                user.manager.managerId
+                            ) {
+                                newManager.employees = [
+                                    ...newManager.employees,
+                                    {
+                                        employeeId: id,
+                                        employeeName: user.name
+                                    }
+                                ];
+                                newManager
+                                    .save()
+                                    .then(product =>
+                                        console.log("new manager info", product)
+                                    )
+                                    .catch(err =>
+                                        console.log(
+                                            `when changing manager, there is error: ${err}`
+                                        )
+                                    );
+                            } else {
+                                console.log("Manager did not change!");
+                            }
                         } else {
-                            console.log("there is no manager to change!");
+                            console.log(
+                                "Before update no manager, after has manager!"
+                            );
                         }
+                    } else {
+                        console.log("After update, no manager anymore");
                     }
                 })
                 .catch(err => console.log(err));
         })
+        .then(() =>
+            User.findByIdAndUpdate({ _id: id }, req.body)
+                .then(() => res.json({ Message: "SUCCESS_UPDATE" }))
+                .catch(err => console.log(err))
+        )
         .catch(err => res.json(err));
 });
 
@@ -176,7 +182,7 @@ app.post("/api/users", function(req, res) {
     newUser.name = req.body.name;
     newUser.title = req.body.title;
     newUser.sex = req.body.sex;
-    newUser.startDate = new Date();
+    newUser.startDate = req.body.startDate;
     newUser.officePhone = req.body.officePhone;
     newUser.sms = req.body.sms;
     newUser.email = req.body.email;
@@ -216,7 +222,7 @@ function removeManager(user) {
         .then(res => {
             res.manager = { managerId: null, managerName: null };
             res.save()
-                .then(res => res.josn({ Message: "COMPLETE_DELETE" }))
+                .then()
                 .catch(err =>
                     res.json({
                         Message: `Error in removing manager ${user.name}`
@@ -237,11 +243,11 @@ app.delete("/api/users/:id", (req, res) => {
                         );
                         manager
                             .save()
-                            .then(res =>
-                                res.josn({ Message: "COMPLETE_DELETE" })
-                            )
+                            .then()
                             .catch(err => {
-                                console.log(`Changing manager got ${err}`);
+                                res.json({
+                                    Message: `Changing manager got ${err}`
+                                });
                             });
                     } else {
                         console.log("No manager to change!");
@@ -252,7 +258,7 @@ app.delete("/api/users/:id", (req, res) => {
             employees.forEach(removeManager);
         })
         .then(() => User.remove({ _id: id }))
-        .then(res => res.json({ Message: "COMPLETE_DELETE" }))
+        .then(() => res.json({ Message: "COMPLETE_DELETE_ALL" }))
         .catch(err => {
             console.log(err);
             res.send(err);

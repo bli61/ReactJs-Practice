@@ -30,43 +30,54 @@ class Home extends Component {
     };
 
     render() {
-        console.log("users in Home", this.props.users);
-        const { autenticated } = this.state;
-
-        if (!autenticated || this.state.input.length === 0) {
-            filteredUsers = [...this.props.users.users];
+        const { isFetching, err } = this.props.users;
+        if (isFetching) {
+            return <div>Loading the data....</div>;
         } else {
-            filteredUsers = [
-                ...this.props.users.users.filter(
-                    user =>
-                        user.name.includes(this.state.input) ||
-                        user.title.includes(this.state.input) ||
-                        user.manager.managerName.includes(this.state.input)
-                )
-            ];
+            if (err) {
+                return <div>This was an error to get the data.</div>;
+            } else {
+                console.log("users in Home", this.props.users);
+                const { autenticated } = this.state;
+
+                if (!autenticated || this.state.input.length === 0) {
+                    filteredUsers = [...this.props.users.users];
+                } else {
+                    filteredUsers = [
+                        ...this.props.users.users.filter(
+                            user =>
+                                user.name.includes(this.state.input) ||
+                                user.title.includes(this.state.input) ||
+                                user.manager.managerName.includes(
+                                    this.state.input
+                                )
+                        )
+                    ];
+                }
+                return (
+                    <div>
+                        <h2>Employee</h2>
+                        Search :{" "}
+                        <input
+                            type="text"
+                            value={this.state.input}
+                            onChange={this.handleInput}
+                        />
+                        <ShowAllInfo users={filteredUsers} />
+                        <Button
+                            variant="contained"
+                            color="default"
+                            style={{ marginTop: 10 }}
+                        >
+                            {" "}
+                            <Link style={{ textDecoration: "none" }} to="/new">
+                                Create New User
+                            </Link>{" "}
+                        </Button>
+                    </div>
+                );
+            }
         }
-        return (
-            <div>
-                <h2>Employee</h2>
-                Search :{" "}
-                <input
-                    type="text"
-                    value={this.state.input}
-                    onChange={this.handleInput}
-                />
-                <ShowAllInfo users={filteredUsers} />
-                <Button
-                    variant="contained"
-                    color="default"
-                    style={{ marginTop: 10 }}
-                >
-                    {" "}
-                    <Link style={{ textDecoration: "none" }} to="/new">
-                        Create New User
-                    </Link>{" "}
-                </Button>
-            </div>
-        );
     }
 }
 

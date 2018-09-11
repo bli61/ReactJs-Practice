@@ -5,7 +5,7 @@ var UserSchema = new Schema({
     imageUrl: String,
     name: String,
     title: String,
-    startDate: { type: Date, default: Date.now },
+    startDate: String,
     sex: String,
     officePhone: Number,
     sms: Number,

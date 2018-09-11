@@ -65,7 +65,8 @@ class CreateNew extends Component {
                     officePhone: this.state.officePhone,
                     sms: this.state.sms,
                     email: this.state.email,
-                    index: this.state.index
+                    index: this.state.index,
+                    startDate: this.state.startDate
                 };
                 console.log("createUser before insert:", pendingUser);
                 this.props.createNew(pendingUser);
@@ -109,6 +110,7 @@ class CreateNew extends Component {
         // console.log(filterUsers);
         console.log("in create", this.props.users);
         console.log("in create", this.state.authenticated);
+        console.log(this.state);
         return (
             <div className="content">
                 {this.props.users.message === "SUCCESS_ADD_EMPLOYEE" &&
@@ -213,6 +215,20 @@ class CreateNew extends Component {
                         />
                     </div>
                 </div>
+
+                <div className="spanL">
+                    <div className="nameField">Start Date: </div>
+                    <div className="inputField">
+                        <input
+                            type="date"
+                            name="startDate"
+                            value={this.state.startDate}
+                            onChange={this.handleChange}
+                            required={true}
+                        />
+                    </div>
+                </div>
+
                 <div className="spanL">
                     <div className="nameField">Manager: </div>
 

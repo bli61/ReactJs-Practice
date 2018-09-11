@@ -96,6 +96,7 @@ class EditUser extends Component {
                         name: this.state.name,
                         sex: this.state.sex,
                         title: this.state.title,
+                        startDate: this.state.startDate,
                         employees: this.state.employees,
                         manager: this.state.manager,
                         officePhone: this.state.officePhone,
@@ -148,8 +149,7 @@ class EditUser extends Component {
                 sms: "",
                 officePhone: "",
                 manager: {},
-                employees: [],
-                authenticated: true
+                employees: []
             });
         }
     };
@@ -157,9 +157,10 @@ class EditUser extends Component {
     render() {
         console.log("in edit user, all valid", this.props.dropdownInfo);
         console.log("in edit user, all info:", this.props.users);
-        console.log(this.state.startDate);
         return (
             <div className="content">
+                {this.props.users.message === "SUCCESS_UPDATE" &&
+                    this.setState({ authenticated: true })}
                 {this.state.authenticated === true && (
                     <Redirect
                         to={{ pathname: "/", state: { from: "/edit" } }}
@@ -271,6 +272,18 @@ class EditUser extends Component {
                             onChange={this.handleChange}
                             required={true}
                             placeholder="Email"
+                        />
+                    </div>
+                </div>
+                <div className="spanL">
+                    <div className="nameField">Start Date: </div>
+                    <div className="inputField">
+                        <input
+                            type="date"
+                            name="startDate"
+                            value={this.state.startDate}
+                            onChange={this.handleChange}
+                            required={true}
                         />
                     </div>
                 </div>

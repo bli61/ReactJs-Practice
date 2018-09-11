@@ -57,14 +57,16 @@ class DetailUser extends Component {
     }
 
     render() {
-        console.log("in delete", this.props.users);
+        console.log("in delete", this.props.users.message);
         console.log("Detailuser:", this.state);
         let employeeList = this.state.employees.map(item => {
             return item.employeeName;
         });
-        let regexp = /[\d-]*T/;
+
         return (
             <div>
+                {this.props.users.message === "COMPLETE_DELETE_ALL" &&
+                    this.setState({ deleteFlag: true })}
                 {this.state.err && <p>{this.state.err}</p>}
                 <div className="content">
                     <img
@@ -77,9 +79,7 @@ class DetailUser extends Component {
                         <li>Title : {this.state.title}</li>
 
                         <li>Sex : {this.state.sex}</li>
-                        <li>
-                            Start Date : {this.state.startDate.match(regexp)}
-                        </li>
+                        <li>Start Date : {this.state.startDate}</li>
                         <li>
                             Email :{" "}
                             <a href={"mailto:" + this.state.email}>
@@ -159,9 +159,6 @@ class DetailUser extends Component {
                         aria-label="Delete"
                         onClick={() => {
                             this.props.deleteUser(this.state.index);
-                            if (this.props) {
-                                this.setState({ deleteFlag: true });
-                            }
                         }}
                     >
                         Delete
